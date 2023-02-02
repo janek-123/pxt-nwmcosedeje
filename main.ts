@@ -8,6 +8,9 @@ const lightMin = 50;
 let startTime = -1;
 let timeFinal;
 
+input.onButtonPressed(Button.A, function(){
+    console.log(4545);
+}) 
 
 basic.forever(function() {
 
@@ -31,7 +34,7 @@ radio.onReceivedNumber(function(receivedNumber: number) {
     if (receivedNumber == 1){
         console.log("start");
 
-        radio.receivedPacket
+        radio.receivedPacket(RadioPacketProperty.Time);
 
         startTime = input.runningTime();
     }
