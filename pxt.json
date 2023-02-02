@@ -4,11 +4,13 @@
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "microphone": "*"
+        "microphone": "*",
+        "WhaleySansFont": "github:makecode-extensions/whaleysansfont#v1.1.0"
     },
     "files": [
         "main.ts",
-        "README.md"
+        "README.md",
+        "LightLevel.ts"
     ],
     "testFiles": [
         "test.ts"

@@ -1,0 +1,1 @@
+function GetLightLevel() { input.lightLevel() };
