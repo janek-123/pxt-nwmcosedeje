@@ -3,39 +3,51 @@ radio.setFrequencyBand(7);
 radio.setTransmitSerialNumber(true);
 radio.setGroup(69);
 
-const lightMin = 50;
-
 let startTime = -1;
-let timeFinal;
+let timeFinal : number;
 
-input.onButtonPressed(Button.A, function(){
-    console.log(4545);
-}) 
+input.onButtonPressed(Button.A, function(){    
+    if (startTime == -1 || calibrating) return;
+
+    whaleysans.showNumber(Math.round(timeFinal / 1000));
+})
+
+input.onButtonPressed(Button.AB, function () {
+    Reset();
+})
+
+input.onButtonPressed(Button.B, function () {
+    Calibrate();
+})
 
 basic.forever(function() {
+    if (startTime == -1 || calibrating) return;
+    
+    TryStart();
+})
 
-    if (startTime == -1) return;
-
+function TryStart(){
     let cLight = input.lightLevel();
-
-
-    if (cLight < lightMin){
+    if (cLight < minLightLevel) {
         music.playTone(66, 5);
-        timeFinal = input.runningTime() - startTime;     
+        timeFinal = input.runningTime() - startTime;
 
         console.log(`TIME: ${timeFinal}`);
         startTime = -1;
     }
-})
+}
 
 radio.onReceivedNumber(function(receivedNumber: number) {
     if (startTime != -1) return;
 
-    if (receivedNumber == 1){
-        console.log("start");
-
-        radio.receivedPacket(RadioPacketProperty.Time);
-
-        startTime = input.runningTime();
-    }
+    if (receivedNumber == 1) StartTimer();
 })
+
+function StartTimer(){
+    console.log("start ");
+    startTime = input.runningTime();
+}
+
+function Reset(){
+    startTime = -1;
+}
