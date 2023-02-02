@@ -1,6 +1,6 @@
 function GetLightLevel() { input.lightLevel(); }
 
-let minLightLevel : number; 
+let minLightLevel = 50; 
 
 let calibrating = false;
 

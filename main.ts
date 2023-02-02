@@ -7,7 +7,7 @@ let startTime = -1;
 let timeFinal : number;
 
 input.onButtonPressed(Button.A, function(){    
-    if (startTime == -1 || calibrating) return;
+    if (calibrating) return;
 
     whaleysans.showNumber(Math.round(timeFinal / 1000));
 })
@@ -23,10 +23,10 @@ input.onButtonPressed(Button.B, function () {
 basic.forever(function() {
     if (startTime == -1 || calibrating) return;
     
-    TryStart();
+    TryStop();
 })
 
-function TryStart(){
+function TryStop(){
     let cLight = input.lightLevel();
     if (cLight < minLightLevel) {
         music.playTone(66, 5);
