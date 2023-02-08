@@ -1,9 +1,11 @@
-radio.setTransmitPower(6);
-radio.setFrequencyBand(7);
-radio.setTransmitSerialNumber(true);
-radio.setGroup(69);
+function SetUp(){
+    radio.setTransmitPower(6);
+    radio.setFrequencyBand(7);
+    radio.setTransmitSerialNumber(true);
+    radio.setGroup(69);
+}
 
-let startTime = -1;
+let startTime = -1; // IF 'startTime != 1' MEANS IT IS CURRENTLY MEASURING
 let timeFinal : number;
 
 input.onButtonPressed(Button.A, function(){    
@@ -17,18 +19,19 @@ input.onButtonPressed(Button.AB, function () {
 })
 
 input.onButtonPressed(Button.B, function () {
+    if(startTime != -1) return;
     Calibrate();
 })
 
 basic.forever(function() {
     if (startTime == -1 || calibrating) return;
     
-    TryStop();
+    TryStopTimer();
 })
 
-function TryStop(){
-    let cLight = input.lightLevel();
-    if (cLight < minLightLevel) {
+// TRIES TO STOP TIME MEASURING
+function TryStopTimer(){
+    if (input.lightLevel() < minLightLevel) {
         music.playTone(66, 5);
         timeFinal = input.runningTime() - startTime;
 
