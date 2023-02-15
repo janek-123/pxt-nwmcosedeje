@@ -6,45 +6,45 @@ function SetUp(){
 }
 
 let startTime = -1; // IF 'startTime != 1' MEANS IT IS CURRENTLY MEASURING
-let timeFinal : number;
+let timeFinal = -1;
 
-input.onButtonPressed(Button.A, function(){    
-    if (calibrating) return;
+function Main(){
+    input.onButtonPressed(Button.B, function () { TryDisplayResult(); })
 
-    whaleysans.showNumber(Math.round(timeFinal / 1000));
-})
+    input.onButtonPressed(Button.AB, function () {
+        Reset();
+    })
 
-input.onButtonPressed(Button.AB, function () {
-    Reset();
-})
+    input.onButtonPressed(Button.A, function () {
+        if (startTime != -1) return;
+        Lights.Calibrate();
+    })
 
-input.onButtonPressed(Button.B, function () {
-    if(startTime != -1) return;
-    Calibrate();
-})
+    basic.forever(function () {
+        if (startTime == -1 || Lights.calibrating) return;
 
-basic.forever(function() {
-    if (startTime == -1 || calibrating) return;
-    
-    TryStopTimer();
-})
+        TryStopTimer();
+    })
+
+    radio.onReceivedNumber(function (receivedNumber: number) {
+        if (startTime != -1) return;
+
+        if (receivedNumber == 1) StartTimer();
+    })
+}
 
 // TRIES TO STOP TIME MEASURING
 function TryStopTimer(){
-    if (input.lightLevel() < minLightLevel) {
+    if (Lights.IsBelowMin()) {
         music.playTone(66, 5);
         timeFinal = input.runningTime() - startTime;
 
         console.log(`TIME: ${timeFinal}`);
         startTime = -1;
+
+        TryDisplayResult();
     }
 }
-
-radio.onReceivedNumber(function(receivedNumber: number) {
-    if (startTime != -1) return;
-
-    if (receivedNumber == 1) StartTimer();
-})
 
 function StartTimer(){
     console.log("start ");
@@ -53,4 +53,10 @@ function StartTimer(){
 
 function Reset(){
     startTime = -1;
+    timeFinal = -1;
+}
+
+function TryDisplayResult(){
+    if (Lights.calibrating || timeFinal == -1) return;
+    whaleysans.showNumber(Math.round(timeFinal / 1000));
 }

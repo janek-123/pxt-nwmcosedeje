@@ -10,7 +10,9 @@
     "files": [
         "main.ts",
         "README.md",
-        "LightLevel.ts"
+        "LightLevel.ts",
+        "haf.ts",
+        "ClassChooser.ts"
     ],
     "testFiles": [
         "test.ts"
