@@ -28,13 +28,11 @@ namespace Start{
 
             if (Lights.IsBelowMin()) {
                 radio.sendNumber(1);
-
                 fTime = input.runningTime() - rStartTime;
 
                 console.log("IS BELOW " + fTime);
 
                 rStartTime = -1;
-
                 whaleysans.showNumber(Math.round(fTime / 1000));
             }
         })

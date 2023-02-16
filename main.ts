@@ -20,12 +20,11 @@ function Main(){
 
     basic.forever(function () {
         if (startTime == -1 || Lights.calibrating) return;
-
         TryStopTimer();
     })
 
     radio.onReceivedNumber(function (receivedNumber: number) {
-        if (startTime != -1) return;
+        if (startTime != -1) return; // TIMER HAS ALREADY STARTED
 
         if (receivedNumber == 1) startTime = input.runningTime();
     })
