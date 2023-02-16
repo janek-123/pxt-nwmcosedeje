@@ -17,7 +17,8 @@ namespace Start{
                 basic.pause(100);
             }
 
-            basic.showIcon(IconNames.Target);
+            basic.clearScreen();
+            music.playTone(Note.CSharp, 50);
 
             rStartTime = input.runningTime();
         })
