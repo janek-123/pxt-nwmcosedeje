@@ -1,25 +1,21 @@
 namespace Lights{
-    
-    let minLightLevel = 50;
     export let calibrating = false;
 
-    const calibCount = 50;
-    const waitTime = 100;
+    let minLightLevel = 50;
 
-    let x = 0;
+    const calibCount = 50;
+    const waitTime = 25;
+    const bottom = 20;
 
     export function IsBelowMin(): boolean { return input.lightLevel() < minLightLevel; }
 
     export function Calibrate() {        
-        basic.showLeds(`# # # # # 
-        # # # # # 
-        # # # # # 
-        # # # # # 
-        # # # # #`, 50)
-
+        basic.showIcon(IconNames.House, 50)
         basic.clearScreen();
 
         calibrating = true;
+
+        let x = 0;
 
         for (let i = calibCount; i > 0; i--){
             x += input.lightLevel();
@@ -27,11 +23,10 @@ namespace Lights{
         }
 
         let calibratedV = Math.round(x / calibCount);
-        minLightLevel = calibratedV > 30 ? calibratedV - 20 : 10;
+        minLightLevel = calibratedV > 30 ? calibratedV - bottom : 10;
         console.log(`MIN :${minLightLevel}`);
 
         led.plot(4, 4);
-
         calibrating = false;
     }
 }

@@ -1,19 +1,17 @@
 function SetUp(){
     radio.setTransmitPower(6);
-    radio.setFrequencyBand(7);
+    radio.setFrequencyBand(9);
     radio.setTransmitSerialNumber(true);
     radio.setGroup(69);
 }
 
 let startTime = -1; // IF 'startTime != 1' MEANS IT IS CURRENTLY MEASURING
-let timeFinal = -1;
+let timeFinal = -1; // IF 'timeFinal == -1': YOU CAN'T DISPLAY RESULT
 
 function Main(){
     input.onButtonPressed(Button.B, function () { TryDisplayResult(); })
 
-    input.onButtonPressed(Button.AB, function () {
-        Reset();
-    })
+    input.onButtonPressed(Button.AB, function () { Reset(); })
 
     input.onButtonPressed(Button.A, function () {
         if (startTime != -1) return;
@@ -29,26 +27,21 @@ function Main(){
     radio.onReceivedNumber(function (receivedNumber: number) {
         if (startTime != -1) return;
 
-        if (receivedNumber == 1) StartTimer();
+        if (receivedNumber == 1) startTime = input.runningTime();
     })
 }
 
 // TRIES TO STOP TIME MEASURING
 function TryStopTimer(){
-    if (Lights.IsBelowMin()) {
-        music.playTone(66, 5);
-        timeFinal = input.runningTime() - startTime;
+    if (!Lights.IsBelowMin()) return;
+    
+    music.playTone(66, 5);
+    timeFinal = input.runningTime() - startTime;
 
-        console.log(`TIME: ${timeFinal}`);
-        startTime = -1;
+    console.log(`TIME: ${timeFinal}`);
+    startTime = -1;
 
-        TryDisplayResult();
-    }
-}
-
-function StartTimer(){
-    console.log("start ");
-    startTime = input.runningTime();
+    TryDisplayResult();
 }
 
 function Reset(){
@@ -61,5 +54,6 @@ function Reset(){
 
 function TryDisplayResult(){
     if (Lights.calibrating || timeFinal == -1) return;
+
     whaleysans.showNumber(Math.round(timeFinal / 1000));
 }
