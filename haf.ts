@@ -1,6 +1,4 @@
 namespace Start{
-    let started = false;
-
     let rStartTime = -1;
     let fTime = 0;
 
@@ -12,7 +10,7 @@ namespace Start{
         })
 
         input.onButtonPressed(Button.B, function () {
-            if (started || Lights.calibrating) return;
+            if (Lights.calibrating) return;
 
             for (let i = 3; i > 0; i--) {
                 basic.showNumber(i);
