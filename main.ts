@@ -54,6 +54,9 @@ function StartTimer(){
 function Reset(){
     startTime = -1;
     timeFinal = -1;
+
+    basic.clearScreen();
+    led.toggle(4, 4);
 }
 
 function TryDisplayResult(){

@@ -12,6 +12,8 @@ namespace Start{
         })
 
         input.onButtonPressed(Button.B, function () {
+            console.log(started + "  " + Lights.calibrating);
+
             if (started || Lights.calibrating) return;
 
             for (let i = 3; i > 0; i--) {
